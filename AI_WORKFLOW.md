@@ -1,7 +1,5 @@
 # AI Workflow Note
 
-> _Draft based on how this project was actually built. Edit it into your own voice before submitting._
-
 ## Tools used
 
 - **Cursor** in agent mode, using Claude, for scaffolding, implementation, debugging, and drafting documentation.
