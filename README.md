@@ -2,7 +2,7 @@
 
 A lightweight collaborative document editor: create and format documents in the browser, import files, and share with other users as editors or viewers.
 
-**Live demo:** _TODO: add deployed URL_
+**Live demo:** https://ajaia-docs-zfwp.onrender.com (free tier: the first load after a period of inactivity can take about 30 s)
 
 ## Demo accounts
 
