@@ -130,6 +130,66 @@ await bob.locator(".ProseMirror h2", { hasText: "Imported section" }).waitFor();
 await bob.getByText(/^Saved/).waitFor({ timeout: 5000 });
 step("bob inserted markdown file into shared doc");
 
+// Conflict: Alice opens the same doc, Bob saves a newer version, Alice's stale save is rejected
+const welcomeUrl = bob.url();
+await alice.goto(welcomeUrl);
+await alice.locator(".ProseMirror h1").waitFor();
+await bob.locator(".ProseMirror").click();
+await bob.keyboard.press("Control+End");
+await bob.keyboard.type(" Bob was here.");
+await bob.getByText(/^Saved/).waitFor({ timeout: 5000 });
+await alice.locator(".ProseMirror").click();
+await alice.keyboard.press("Control+End");
+await alice.keyboard.type(" Alice too.");
+await alice.getByText(/changed by someone else/).waitFor({ timeout: 5000 });
+if ((await alice.locator(".ProseMirror").getAttribute("contenteditable")) !== "false") throw new Error("editor should lock on conflict");
+if (await alice.locator(".toolbar").count()) throw new Error("toolbar should hide on conflict");
+const reloadBox = await alice.getByRole("button", { name: "Reload" }).boundingBox();
+if (!reloadBox || reloadBox.y < 0 || reloadBox.y > 860) throw new Error("conflict banner should stay in view");
+await alice.screenshot({ path: `${SHOTS}/06-conflict.png` });
+await alice.getByRole("button", { name: "Reload" }).click();
+await alice.locator(".ProseMirror", { hasText: "Bob was here." }).waitFor();
+step("stale save rejected with conflict banner; reload shows the newer version");
+
+// Empty title reverts instead of saving
+await alice.goto(docUrl);
+const titleInput = alice.getByLabel("Document title");
+await titleInput.fill("   ");
+await titleInput.press("Enter");
+if ((await titleInput.inputValue()) !== "Launch plan") throw new Error("empty title should revert");
+step("empty title reverts");
+
+// Export to Markdown
+const [download] = await Promise.all([
+  alice.waitForEvent("download"),
+  alice.getByRole("button", { name: "Export .md" }).click(),
+]);
+const md = fs.readFileSync(await download.path(), "utf8");
+if (download.suggestedFilename() !== "Launch plan.md" || !md.includes("# Launch plan") || !md.includes("**bold**")) {
+  throw new Error(`unexpected export: ${download.suggestedFilename()}\n${md}`);
+}
+step("markdown export");
+
+// Revoke Carol's access
+await alice.getByRole("button", { name: /^Share/ }).click();
+await alice.getByRole("button", { name: "Remove Carol Singh" }).click();
+await alice.locator(".share-list").getByText("Carol Singh").waitFor({ state: "detached" });
+await alice.getByRole("button", { name: "Done" }).click();
+await carol.reload();
+await carol.getByRole("heading", { name: "Document not found" }).waitFor();
+step("revoked viewer loses access");
+
+// Owner deletes the document
+await alice.goto(BASE);
+alice.once("dialog", (d) => d.accept());
+const myDocs = alice.locator(".doc-section", { hasText: "My documents" });
+await myDocs.getByRole("button", { name: "Delete Launch plan" }).click();
+await myDocs.getByText("Launch plan").waitFor({ state: "detached" });
+await alice.reload();
+await alice.getByText("My documents").waitFor();
+if (await myDocs.getByText("Launch plan").count()) throw new Error("deleted doc came back after reload");
+step("owner deletes document");
+
 await browser.close();
 console.log("ALL E2E CHECKS PASSED");
 

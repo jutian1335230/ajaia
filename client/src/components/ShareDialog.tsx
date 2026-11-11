@@ -114,6 +114,7 @@ export function ShareDialog({ documentId, owner, initialShares, onChange, onClos
               <button
                 className="btn ghost icon"
                 title={`Remove ${s.name}`}
+                aria-label={`Remove ${s.name}`}
                 disabled={busy}
                 onClick={() => run(() => api.unshareDocument(documentId, s.id))}
               >

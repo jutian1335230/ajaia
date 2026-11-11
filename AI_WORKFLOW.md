@@ -31,6 +31,9 @@
    - Alice shares with Carol as a viewer; an unknown email shows an error.
    - Carol sees the document under "Shared with me," gets no toolbar, and the editor isn't editable. She sees Alice's later edits without reloading.
    - Bob gets "not found" when he opens Alice's URL directly, and he inserts a Markdown file into a document he can edit.
+   - When Alice and Bob edit the same document, Alice's stale save shows the conflict banner and locks her editor, and reloading shows Bob's version.
+   - An empty title reverts, Markdown export downloads the right content, a revoked viewer loses access, and a deleted document stays deleted after a refresh.
+   - The test also caught a real accessibility bug: the icon-only "remove person" and "delete" buttons had no accessible names, so a screen reader would read them as "✕" and "🗑". They now have proper labels.
 3. **Manual checks:** a real `.docx` file (generated with python-docx) imported through the API, keeping its heading, bold text, and list.
 4. **Visual review** of the screenshots in `docs/screenshots/` for layout, badges, and empty and error states.
 5. **`tsc --noEmit`** on both the client and the server, and a production build.

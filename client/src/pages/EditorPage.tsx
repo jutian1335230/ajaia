@@ -208,26 +208,27 @@ function DocumentEditor({ doc }: { doc: DocumentDetail }) {
         </div>
       </Header>
 
-      {autosave.status === "conflict" && (
-        <div className="banner warning">
-          {autosave.error} Your latest unsaved edits are still visible but won't be saved.
-          <button className="btn" onClick={() => window.location.reload()}>
-            Reload
-          </button>
-        </div>
-      )}
-      {autosave.status === "error" && <div className="banner error-banner">Couldn't save: {autosave.error}</div>}
-      {importError && (
-        <div className="banner error-banner">
-          {importError}
-          <button className="btn ghost" onClick={() => setImportError(null)}>
-            Dismiss
-          </button>
-        </div>
-      )}
-      {!canEdit && <div className="banner info">You have view-only access. Ask {doc.owner.name} for edit access.</div>}
-
-      {editor && canEdit && <Toolbar editor={editor} />}
+      <div className="sticky-bar">
+        {autosave.status === "conflict" && (
+          <div className="banner warning">
+            {autosave.error} Your latest unsaved edits are still visible but won't be saved.
+            <button className="btn" onClick={() => window.location.reload()}>
+              Reload
+            </button>
+          </div>
+        )}
+        {autosave.status === "error" && <div className="banner error-banner">Couldn't save: {autosave.error}</div>}
+        {importError && (
+          <div className="banner error-banner">
+            {importError}
+            <button className="btn ghost" onClick={() => setImportError(null)}>
+              Dismiss
+            </button>
+          </div>
+        )}
+        {!canEdit && <div className="banner info">You have view-only access. Ask {doc.owner.name} for edit access.</div>}
+        {editor && editable && <Toolbar editor={editor} />}
+      </div>
       <main className="page-wrap">
         <div className="page">
           <EditorContent editor={editor} />

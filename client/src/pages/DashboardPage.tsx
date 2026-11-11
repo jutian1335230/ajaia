@@ -126,7 +126,7 @@ function DocList({
                 )}
                 <span className="muted small">{formatRelative(doc.updatedAt)}</span>
                 {onDelete && (
-                  <button className="btn ghost icon" title="Delete document" onClick={() => onDelete(doc)}>
+                  <button className="btn ghost icon" title="Delete document" aria-label={`Delete ${doc.title}`} onClick={() => onDelete(doc)}>
                     🗑
                   </button>
                 )}
