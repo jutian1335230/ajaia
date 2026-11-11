@@ -1,0 +1,62 @@
+{
+  "name": "ajaia-docs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Lightweight collaborative document editor (Ajaia assignment)",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n server,client -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "tsx watch server/src/index.ts",
+    "dev:client": "vite",
+    "build": "vite build && tsc -p server/tsconfig.json",
+    "start": "node server/dist/index.js",
+    "test": "vitest run",
+    "e2e": "node scripts/e2e-smoke.mjs",
+    "typecheck": "tsc -p server/tsconfig.json --noEmit && tsc -p client/tsconfig.json --noEmit"
+  },
+  "overrides": {
+    "htmlparser2": "^8.0.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.7.0",
+    "express": "^4.21.2",
+    "mammoth": "^1.8.0",
+    "marked": "^15.0.4",
+    "multer": "^1.4.5-lts.1",
+    "sanitize-html": "^2.14.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@tiptap/extension-placeholder": "^2.10.4",
+    "@tiptap/extension-underline": "^2.10.4",
+    "@tiptap/pm": "^2.10.4",
+    "@tiptap/react": "^2.10.4",
+    "@tiptap/starter-kit": "^2.10.4",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^20.17.10",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/sanitize-html": "^2.13.0",
+    "@types/supertest": "^6.0.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "playwright-core": "^1.49.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.1",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.2",
+    "turndown": "^7.2.0",
+    "@types/turndown": "^5.0.5",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
+  }
+}

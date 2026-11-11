@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ajaia-docs
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_PATH
+        value: /data/app.db
+    # Render's free plan has no persistent disk: the SQLite file is recreated (and
+    # re-seeded) whenever the instance restarts or redeploys. On a paid plan,
+    # uncomment to keep data across restarts:
+    # disk:
+    #   name: data
+    #   mountPath: /data
+    #   sizeGB: 1
