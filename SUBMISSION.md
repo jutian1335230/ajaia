@@ -4,7 +4,7 @@
 
 - **Live app:** https://ajaia-docs-zfwp.onrender.com (the first load after a period of inactivity can take about 30 s while the free instance wakes up)
 - **Source:** https://github.com/jutian1335230/ajaia
-- **Walkthrough video:** see [`VIDEO_URL.txt`](VIDEO_URL.txt)
+- **Walkthrough video:** https://youtu.be/dkskjSA6tlA
 
 ## Test accounts
 
